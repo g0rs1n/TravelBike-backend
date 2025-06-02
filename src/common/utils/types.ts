@@ -8,3 +8,9 @@ export interface IRegisterData {
     phone?: string;
     avatarPath?: string;
 }
+
+export interface ILoginData {
+    username?: string;
+    email: string;
+    password: string;
+}
