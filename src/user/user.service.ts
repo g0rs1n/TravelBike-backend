@@ -10,6 +10,21 @@ export class UserService {
         private readonly prisma: PrismaService
     ) {}
 
+    async findById (userId: number) {
+        try {
+
+            const user = await this.prisma.user.findUnique({
+                where: {id: userId}
+            })
+
+            return user
+            
+        } catch (error) {
+            console.error("FindById UserService error:", error)
+            throw error
+        }
+    }
+
     async findUser (payload: string) {
         try {   
             const user = await this.prisma.user.findFirst({

@@ -14,3 +14,12 @@ export interface ILoginData {
     email: string;
     password: string;
 }
+
+export interface IUserBase {
+    email: string;
+    username: string;
+    firstName?: string;
+    lastName?: string;
+    phone?: string;
+    avatarPath?: string;
+}
