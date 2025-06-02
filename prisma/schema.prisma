@@ -15,7 +15,7 @@ model User {
   firstName String? @map("first_name")
   lastName String? @map("last_name")
   password String
-  phone String @default("")
+  phone String?
   avatarPath String @default("https://placehold.co/400x400") @map("avatar_path")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
