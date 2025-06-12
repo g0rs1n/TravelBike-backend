@@ -29,7 +29,6 @@ export class AuthController {
     @Res({passthrough: true}) res: Response
   ) {
     const token = await this.authService.validateUser(loginPayload)
-    console.log(token)
     res.cookie("access_token", token, {
       httpOnly: true,
       sameSite: 'strict',

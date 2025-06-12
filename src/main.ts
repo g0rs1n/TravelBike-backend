@@ -20,7 +20,8 @@ async function bootstrap() {
   app.setGlobalPrefix("/api")
   app.useGlobalFilters(new AllExceptionsFilter())
   try {
-    await app.listen(PORT ?? 3000)
+    await app.listen(PORT!)
+    console.log(`Server run on PORT:${PORT}`)
   } catch (error) {
     console.error(error)
   }
