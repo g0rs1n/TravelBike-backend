@@ -104,7 +104,7 @@ yarn start:dev
 ```
 
 ### After starting the backend, you can now launch the frontend.
-### To do that, switch to the TravelBike frontend repository and follow its setup instructions.
+### To do that, switch to the [TravelBike frontend repository](https://github.com/g0rs1n/TravelBike-frontend) and follow its setup instructions.
 
 ---
 
