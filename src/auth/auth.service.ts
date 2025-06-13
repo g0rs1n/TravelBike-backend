@@ -59,4 +59,22 @@ export class AuthService {
             throw error
         }
     }
+
+    async verifyAuth (token: string) {
+        try {
+
+            if (!token) throw new UnauthorizedException("Access token not found")
+
+            const isToken = await this.jwtService.verify(token)
+
+            if (!isToken) throw new UnauthorizedException("Invalid token")
+
+            return true
+            
+        } catch (error) {
+            console.error("Verify Auth: error", error)
+            throw error
+        }
+    }
+
 }

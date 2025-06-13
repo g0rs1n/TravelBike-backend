@@ -1,13 +1,22 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { 
+  Body, 
+  Controller, 
+  Get, 
+  HttpCode, 
+  Post, 
+  Req, 
+  Res 
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { registerUserDto } from './dtos/register-user.dto';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { loginUserDto } from './dtos/login-user.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @HttpCode(201)
   @Post('register')
   async register (
     @Body() registerDto: registerUserDto,
@@ -23,6 +32,7 @@ export class AuthController {
     return {message: 'User registered successfully'}
   }
 
+  @HttpCode(200)
   @Post('login')
   async login (
     @Body() loginPayload: loginUserDto,
@@ -36,6 +46,15 @@ export class AuthController {
       maxAge: 24 * 60 * 60 * 1000
     })
     return {message: 'Login successful'}
+  }
+
+  @HttpCode(200)
+  @Get('verify')
+  async verify (
+    @Req() req: Request
+  ) {
+    const token = req.cookies?.access_token
+    return this.authService.verifyAuth(token)
   }
 
 }
