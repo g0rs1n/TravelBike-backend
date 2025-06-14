@@ -27,7 +27,7 @@
 - **[bcryptjs](https://github.com/dcodeIO/bcrypt.js) - password hashing**
 - **[cookie-parser](https://github.com/expressjs/cookie-parser) - cookie parsing**
 - **[passport + passport-jwt](http://www.passportjs.org/packages/passport-jwt/) - JWT authorization strategy**
-- **[DOMPurify](https://github.com/cure53/DOMPurify) – sanitize HTML to prevent XSS**
+- **[DOMPurify + jsdom](https://github.com/cure53/DOMPurify) – sanitize HTML to prevent XSS**
 
 ---
 
