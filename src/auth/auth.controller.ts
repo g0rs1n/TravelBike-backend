@@ -5,12 +5,14 @@ import {
   HttpCode, 
   Post, 
   Req, 
-  Res 
+  Res, 
+  UsePipes
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { registerUserDto } from './dtos/register-user.dto';
 import { Response, Request } from 'express';
 import { loginUserDto } from './dtos/login-user.dto';
+import { SanitizePipe } from 'src/common/pipes/sanitize/sanitize.pipe';
 
 @Controller('auth')
 export class AuthController {
@@ -18,6 +20,7 @@ export class AuthController {
 
   @HttpCode(201)
   @Post('register')
+  @UsePipes(SanitizePipe)
   async register (
     @Body() registerDto: registerUserDto,
     @Res({passthrough: true}) res: Response
@@ -34,6 +37,7 @@ export class AuthController {
 
   @HttpCode(200)
   @Post('login')
+  @UsePipes(SanitizePipe)
   async login (
     @Body() loginPayload: loginUserDto,
     @Res({passthrough: true}) res: Response
@@ -50,6 +54,7 @@ export class AuthController {
 
   @HttpCode(200)
   @Get('verify')
+  @UsePipes(SanitizePipe)
   async verify (
     @Req() req: Request
   ) {

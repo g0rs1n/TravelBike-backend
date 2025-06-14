@@ -3,9 +3,8 @@ import {
     IsString, 
     Length, 
     Matches, 
-    MaxLength 
+    MaxLength,
 } from "class-validator";
-
 
 export class registerUserDto {
 
