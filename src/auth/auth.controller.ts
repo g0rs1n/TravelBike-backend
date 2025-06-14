@@ -54,7 +54,6 @@ export class AuthController {
 
   @HttpCode(200)
   @Get('verify')
-  @UsePipes(SanitizePipe)
   async verify (
     @Req() req: Request
   ) {

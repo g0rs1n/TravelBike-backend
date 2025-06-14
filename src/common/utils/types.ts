@@ -23,3 +23,7 @@ export interface IUserBase {
     phone?: string;
     avatarPath?: string;
 }
+
+export type TPayloadJwtAccesToken = {
+    sub: number;
+}

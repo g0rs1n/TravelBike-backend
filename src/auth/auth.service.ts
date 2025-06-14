@@ -5,7 +5,11 @@ import {
     UnauthorizedException
 } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
-import { IRegisterData, ILoginData } from 'src/common/utils/types';
+import { 
+    IRegisterData, 
+    ILoginData, 
+    TPayloadJwtAccesToken 
+} from 'src/common/utils/types';
 import { PasswordService } from './password/password.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
@@ -65,9 +69,11 @@ export class AuthService {
 
             if (!token) throw new UnauthorizedException("Access token not found")
 
-            const isToken = await this.jwtService.verify(token)
+            const payload: TPayloadJwtAccesToken = await this.jwtService.verify(token)
+            if (!payload) throw new UnauthorizedException("Invalid token")
 
-            if (!isToken) throw new UnauthorizedException("Invalid token")
+            const user = await this.userService.findById(payload.sub)
+            if (!user) throw new UnauthorizedException("Access denied")
 
             return true
             
