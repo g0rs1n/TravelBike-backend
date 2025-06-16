@@ -75,7 +75,7 @@ export class AuthService {
             const user = await this.userService.findById(payload.sub)
             if (!user) throw new UnauthorizedException("Access denied")
 
-            return true
+            return { success: true, message: "Authenticated successfully" }
             
         } catch (error) {
             console.error("Verify Auth: error", error)
