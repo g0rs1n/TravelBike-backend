@@ -64,23 +64,4 @@ export class AuthService {
         }
     }
 
-    async verifyAuth (token: string) {
-        try {
-
-            if (!token) throw new UnauthorizedException("Access token not found")
-
-            const payload: TPayloadJwtAccesToken = await this.jwtService.verify(token)
-            if (!payload) throw new UnauthorizedException("Invalid token")
-
-            const user = await this.userService.findById(payload.sub)
-            if (!user) throw new UnauthorizedException("Access denied")
-
-            return { success: true, message: "Authenticated successfully" }
-            
-        } catch (error) {
-            console.error("Verify Auth: error", error)
-            throw error
-        }
-    }
-
 }

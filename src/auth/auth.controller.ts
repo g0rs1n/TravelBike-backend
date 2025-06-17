@@ -6,13 +6,15 @@ import {
   Post, 
   Req, 
   Res, 
-  UsePipes
+  UsePipes,
+  UseGuards
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { registerUserDto } from './dtos/register-user.dto';
 import { Response, Request } from 'express';
 import { loginUserDto } from './dtos/login-user.dto';
 import { SanitizePipe } from 'src/common/pipes/sanitize/sanitize.pipe';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -52,11 +54,9 @@ export class AuthController {
 
   @HttpCode(200)
   @Get('verify')
-  async verify (
-    @Req() req: Request
-  ) {
-    const token = req.cookies?.access_token
-    return this.authService.verifyAuth(token)
+  @UseGuards(AuthGuard('jwt'))
+  async verify () {
+    return { success: true, message: "Authenticated successfully" }
   }
 
 }
