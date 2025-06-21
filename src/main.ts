@@ -2,11 +2,16 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { AllExceptionsFilter } from './common/filters/allExceptions.filter';
+import { WebSocketAdapter } from './gateway/adapter/gateway.adapter';
+import { UserService } from './user/user.service';
 import cookieParser from 'cookie-parser'
 
 async function bootstrap() {
   const {CORS_ORIGIN, PORT} = process.env
   const app = await NestFactory.create(AppModule);
+  const userService = app.get(UserService)
+  const adapter = new WebSocketAdapter(userService)
+  app.useWebSocketAdapter(adapter)
   app.use(cookieParser())
   app.useGlobalPipes(
     new ValidationPipe({
