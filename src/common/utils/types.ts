@@ -35,5 +35,5 @@ export interface IJwtPayload {
 }
 
 export interface IAuthenticatedSocket extends Socket {
-  user?: IUserBase;
+  user: IUserBase;
 }
