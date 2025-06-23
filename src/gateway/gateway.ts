@@ -2,8 +2,7 @@ import {
   WebSocketGateway,
   WebSocketServer,
   OnGatewayConnection,
-  OnGatewayDisconnect,
-  WsException
+  OnGatewayDisconnect
 } from '@nestjs/websockets';
 import { GatewaySessionManager } from './gateway.session';
 import { Server } from 'socket.io';
@@ -35,7 +34,11 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
         message: `Welcome, ${socket.user.username}!`
       })
     } else {
-      throw new WsException("Unauthorized: user data missing")
+      console.error("Unauthorized: user data missing");
+      socket.emit("exception", {
+        message: "Unauthorized: user data missing"
+      })
+      socket.disconnect(true)
     }
   }
 
@@ -44,7 +47,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
       console.log(`User disconnected: id=${socket.user.id}, username=${socket.user.username}`)
       this.sessions.deleteUserSocket(socket.user.id)
     } else {
-      throw new WsException("Unauthorized disconnect attempt: user info missing in socket")
+      console.error("Unauthorized disconnect attempt: user info missing in socket")
     }
   }
   

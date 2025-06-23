@@ -5,29 +5,40 @@ import {
     HttpException,
     HttpStatus
 } from "@nestjs/common";
+import { WsException } from "@nestjs/websockets";
 
-@Catch(HttpException)
+@Catch(HttpException, WsException)
 export class AllExceptionsFilter implements ExceptionFilter {
 
     catch(exception: any, host: ArgumentsHost) {
 
-        const ctx = host.switchToHttp()
-        const response = ctx.getResponse()
-        const request = ctx.getRequest()
+        const ctxType = host.getType()
 
-        const status = exception instanceof HttpException
-            ? exception.getStatus()
-            : HttpStatus.INTERNAL_SERVER_ERROR
-        const message = exception instanceof HttpException
-            ? exception.getResponse()
-            : "Internal server error"
+        if (ctxType === "http") {
+            const ctxHttp = host.switchToHttp()
+            const response = ctxHttp.getResponse()
+            const request = ctxHttp.getRequest()
 
-        response.status(status).json({
-            statusCode: status,
-            message,
-            timestamp: new Date().toISOString(),
-            path: request.url,
-        })
+            const status = exception instanceof HttpException
+                ? exception.getStatus()
+                : HttpStatus.INTERNAL_SERVER_ERROR
+            const message = exception instanceof HttpException
+                ? exception.getResponse()
+                : "Internal server error"
+
+            response.status(status).json({
+                statusCode: status,
+                message,
+                timestamp: new Date().toISOString(),
+                path: request.url,
+            })
+        } else if (ctxType === "ws") {
+            const ctxWs = host.switchToWs()
+            const client = ctxWs.getClient()
+            const message = exception instanceof WsException ?
+                exception.getError() : 'Internal server error'
+            client.emit("exception", {message})
+        }
     }
     
 }
