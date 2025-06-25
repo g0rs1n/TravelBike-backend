@@ -10,7 +10,7 @@ async function bootstrap() {
   const {CORS_ORIGIN, PORT} = process.env
   const app = await NestFactory.create(AppModule);
   const userService = app.get(UserService)
-  const adapter = new WebSocketAdapter(userService)
+  const adapter = new WebSocketAdapter(app, userService)
   app.useWebSocketAdapter(adapter)
   app.use(cookieParser())
   app.useGlobalPipes(

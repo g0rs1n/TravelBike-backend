@@ -35,8 +35,8 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   handleDisconnect(socket: IAuthenticatedSocket) {
-      console.log(`User disconnected: id=${socket.user.id}, username=${socket.user.username}`)
-      this.sessions.deleteUserSocket(socket.user.id)
+    console.log(`User disconnected: id=${socket.user.id}, username=${socket.user.username}`)
+    this.sessions.deleteUserSocket(socket.user.id)
   }
   
 }
