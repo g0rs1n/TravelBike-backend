@@ -42,8 +42,10 @@ export class WebSocketAdapter extends IoAdapter {
                 if (!user) {
                     return next(new Error('User not found'))
                 }
+
+                const {password:_, ...userData} = user
                 
-                socket.user = user
+                socket.user = userData
 
                 next()
                 
