@@ -5,12 +5,15 @@ import {
   Res,
   Req, 
   UseGuards,
-  HttpCode
+  HttpCode,
+  Patch,
+  Body
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
 import { IUserBase } from 'src/common/utils/types';
 import { Request, Response } from 'express';
+import { UpdateUserDto } from './dtos/update-user.dto';
 
 interface RequestWithUser extends Request {
   user: IUserBase;
@@ -39,6 +42,21 @@ export class UserController {
       secure: process.env.NODE_ENV === "production"
     })
     return {success: true, message: "Logged out successfully"}
+  }
+
+  @HttpCode(200)
+  @Patch()
+  @UseGuards(AuthGuard("jwt"))
+  async updateUser (
+    @Req() req: RequestWithUser,
+    @Body() userDto: UpdateUserDto
+  ) {
+    const userId = req.user.id
+    const newUser = await this.userService.updateUser(userDto, userId)
+    return {
+      message: "Profile updated",
+      user: newUser
+    }
   }
 
 }

@@ -1,8 +1,9 @@
 import { 
     Injectable
 } from '@nestjs/common';
-import { IRegisterData } from 'src/common/utils/types';
+import { IRegisterData} from 'src/common/utils/types';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UpdateUserDto } from './dtos/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -53,4 +54,25 @@ export class UserService {
             throw error
         }
     }
+
+    async updateUser (userData: UpdateUserDto, userId: number) {
+        try {
+
+            const user = await this.prisma.user.update({
+                where: {
+                    id: userId
+                },
+                data: userData
+            })
+
+            const {password:_, ...newUser} = user
+
+            return newUser
+            
+        } catch (error) {
+            console.error("Error updating user:", error)
+            throw error
+        }
+    }
+
 }
