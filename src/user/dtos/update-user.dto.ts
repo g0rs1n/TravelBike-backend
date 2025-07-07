@@ -22,12 +22,12 @@ export class UpdateUserDto {
 
     @IsOptional()
     @IsString()
-    @Length(1,50)
+    @MaxLength(50)
     firstName?: string | null
 
     @IsOptional()
     @IsString()
-    @Length(1,60)
+    @MaxLength(60)
     lastName?: string | null
 
     @IsOptional()
