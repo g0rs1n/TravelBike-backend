@@ -7,13 +7,15 @@ import {
   UseGuards,
   HttpCode,
   Patch,
-  Body
+  Body,
+  UsePipes
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
 import { IUserBase } from 'src/common/utils/types';
 import { Request, Response } from 'express';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { SanitizePipe } from 'src/common/pipes/sanitize/sanitize.pipe';
 
 interface RequestWithUser extends Request {
   user: IUserBase;
@@ -47,6 +49,7 @@ export class UserController {
   @HttpCode(200)
   @Patch()
   @UseGuards(AuthGuard("jwt"))
+  @UsePipes(SanitizePipe)
   async updateUser (
     @Req() req: RequestWithUser,
     @Body() userDto: UpdateUserDto
